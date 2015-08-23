@@ -1,0 +1,39 @@
+#!/bin/bash
+
+
+if [ -z "$NAME" ]; then
+  echo No NAME specified, using default
+	NAME=backup
+fi
+
+if [ -z "$DESTINATION" ]; then
+	DESTINATION=$(date +"%Y-%m-%d-%H%M%S")_${NAME}.tar.gz
+fi
+
+echo Using the following configuration:
+echo
+echo "    DESTINATION:        ${DESTINATION}"
+echo
+
+cd /var/backups
+
+echo Archiving files ...
+echo
+
+tar -czvf ${DESTINATION} -C /var/source .
+
+RETVAL=$?
+
+cd ~
+
+echo
+echo Achiving files complete.
+echo
+
+if [ "$RETVAL" == 0 ]; then
+	echo Backup finished successfully.
+	exit 0
+else
+	echo Backup failed with errors!
+	exit 1
+fi

@@ -1,12 +1,14 @@
-FROM		hauptmedia/mariadb:10.0-galera
+FROM	debian:jessie
 MAINTAINER	Dylan Miles <dylan.g.miles@gmail.com>
 
 # install required packages
 RUN		apt-get update -qq && \
-		apt-get install -y --no-install-recommends bzip2 && \
-                apt-get clean autoclean && \
-                apt-get autoremove --yes && \
-                rm -rf /var/lib/{apt,dpkg,cache,log}/
+		apt-get install -y \
+					curl \
+					wget && \
+          apt-get clean autoclean && \
+          apt-get autoremove --yes && \
+          rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 ENV		GO_CRON_VERSION v0.0.7
 
@@ -24,8 +26,7 @@ RUN		apt-get update -qq && \
                 rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 # install backup scripts
-ADD		backup-galera-xtrabackup-v2 /usr/local/bin/backup-galera-xtrabackup-v2
-ADD		backup-mysqldump /usr/local/bin/backup-mysqldump
+ADD		backup-file /usr/local/bin/backup-file
 ADD		backup-run /usr/local/bin/backup-run
 
 #18080 http status port
