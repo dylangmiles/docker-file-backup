@@ -27,7 +27,7 @@ RETVAL=$?
 cd ~
 
 echo
-echo Achiving files complete.
+echo Archiving files complete.
 echo
 
 if [ "$RETVAL" == 0 ]; then

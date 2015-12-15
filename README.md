@@ -1,8 +1,8 @@
-# docker-mariadb-backup
+# docker-file-backup
 
-This container can be used to periodically backup MySQL, MariaDB, and MariaDB Galera cluster instances.
+This container can be used to periodically backup files or folders.
 
-Example usage which will backup the database every day at 03:00. You can check the last run with the integrated HTTP server on port 18080:
+Example usage which will backup the source file or folder every day at 03:00. You can check the last run with the integrated HTTP server on port 18080:
 
 ```bash
 docker run -d \
@@ -14,28 +14,28 @@ docker run -d \
 dylangmiles/docker-file-backup
 ```
 
+```bash
+docker run \
+-v /home/julian/Development/alchemy@bitbucket/assa-education/backups:/var/backups \
+-v /home/julian/Development/alchemy@bitbucket/assa-education/data:/var/source \
+-p 18080:18080 \
+-e SCHEDULE="0 0/2 0 * * ?" \
+-e NAME="moodledata" \
+dylangmiles/docker-file-backup
+```
+
 # Available backup methods
 
-## mysqldump
+## file
 
-Backups a MySQL/MariaDB database via mysqldump.
+Backups a file or folder.
 
 Example standalone run:
 
 ```bash
 docker run -i -t --rm \
--v /var/backups:/var/backups \
-hauptmedia/mariadb-backup \
-backup-mysqldump \
--u root -p test -h 172.17.0.19
-```
-
-```
-Usage: /usr/local/bin/backup-mysqldump -u mysqluser -p mysqlpassword -h mysqlhost
-
-  -u  Specifies the MySQL user (required)
-  -p  Specifies the MySQL password (required)
-  -h  Specifies the MySQL host (required)
-  -P  Specifies the MySQL port (optional)
-  -d  Specifies the backup file where to put the backup (default: /var/backups/CURRENT_DATETIME_MYSQLHOST_mysqldump)
+-v /home/julian/Development/alchemy@bitbucket/assa-education/backups:/var/backups \
+-v /home/julian/Development/alchemy@bitbucket/assa-education/data:/var/source \
+dylangmiles/docker-file-backup \
+backup-file
 ```
