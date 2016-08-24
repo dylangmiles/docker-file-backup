@@ -1,34 +1,47 @@
 #!/bin/bash
 
 
+
+echo
+echo Starting backup
+echo ===============
+echo
+
 if [ -z "$NAME" ]; then
   echo No NAME specified, using default
 	NAME=backup
 fi
 
-if [ -z "$DESTINATION" ]; then
-	DESTINATION=$(date +"%Y-%m-%d-%H%M%S")_${NAME}.tar.gz
+if [ -z "$FILENAME" ]; then
+	FILENAME=$(date +"%Y-%m-%d-%H%M%S")_${NAME}.tar.gz
 fi
 
-echo Using the following configuration:
-echo
-echo "    DESTINATION:        ${DESTINATION}"
+
+echo "FILENAME:        ${FILENAME}"
 echo
 
-cd /var/backups
+cd /var/tmp
 
 echo Archiving files ...
-echo
 
-tar -czvf ${DESTINATION} -C /var/source .
+tar -czvf ${FILENAME} -C /var/source .
+
+RETVAL=$?
+
+echo Copy archive to final destination
+
+cp ${FILENAME} /var/destination
+
+RETVAL=$?
+
+echo Remove temporary archives
+
+rm ./*
 
 RETVAL=$?
 
 cd ~
 
-echo
-echo Archiving files complete.
-echo
 
 if [ "$RETVAL" == 0 ]; then
 	echo Backup finished successfully.

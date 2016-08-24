@@ -39,3 +39,26 @@ docker run -i -t --rm \
 dylangmiles/docker-file-backup \
 backup-file
 ```
+
+
+## Docker Compose
+
+filebackup:
+  image: dylangmiles/docker-file-backup
+  restart: always
+  volumes:
+   - /mnt/ftp_backup:/var/backups
+  ports:
+   - 16060:16060
+  environment:
+   - SCHEDULE=0 0 3 * * ?
+   - NAME=moodledata
+
+
+docker run \
+-v ~/destination:/var/destination \
+-v ~/source:/var/source \
+-p 18080:18080 \
+-e SCHEDULE="0 */5 * * *" \
+-e NAME="test" \
+dylangmiles/docker-file-backup
