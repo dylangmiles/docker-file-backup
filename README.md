@@ -59,6 +59,8 @@ docker run \
 -v ~/destination:/var/destination \
 -v ~/source:/var/source \
 -p 18080:18080 \
--e SCHEDULE="0 */5 * * *" \
+-e SCHEDULE="*/10 * * * *" \
 -e NAME="test" \
 dylangmiles/docker-file-backup
+
+NB: The backup will ignore any directories with .file-backup-ignore in them.

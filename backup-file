@@ -24,7 +24,7 @@ cd /var/tmp
 
 echo Archiving files ...
 
-tar -czvf ${FILENAME} -C /var/source .
+tar --exclude-tag-under=.file-backup-ignore -czvf ${FILENAME} -C /var/source .
 
 RETVAL=$?
 
