@@ -1,7 +1,5 @@
 #!/bin/bash
 
-
-
 echo
 echo Starting backup
 echo ===============
@@ -16,7 +14,6 @@ if [ -z "$FILENAME" ]; then
 	FILENAME=$(date +"%Y-%m-%d-%H%M%S")_${NAME}.tar.gz
 fi
 
-
 echo "FILENAME:        ${FILENAME}"
 echo
 
@@ -28,20 +25,20 @@ tar --exclude-tag-under=.file-backup-ignore -czvf ${FILENAME} -C /var/source .
 
 RETVAL=$?
 
-echo Copy archive to final destination
 
-cp ${FILENAME} /var/destination
+if [ "$RETVAL" == 0 ]; then
+    echo Copy archive to final destination
+    cp -v ${FILENAME} /var/destination
+    RETVAL=$?
+fi    
 
-RETVAL=$?
-
-echo Remove temporary archives
-
-rm ./*
-
-RETVAL=$?
-
+if [ "$RETVAL" == 0 ]; then
+    echo Remove temporary archives
+    rm -v ./*
+    RETVAL=$?
+fi
+    
 cd ~
-
 
 if [ "$RETVAL" == 0 ]; then
 	echo Backup finished successfully.
