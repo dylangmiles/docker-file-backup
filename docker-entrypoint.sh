@@ -9,7 +9,7 @@ if [ $1 = "go-cron" ]; then
 		exit 1
 	fi
 
-	exec go-cron -s "${SCHEDULE}" -- /usr/local/bin/backup-run
+	exec go-cron -s "${SCHEDULE}" -- /usr/local/bin/backup-run.sh
 fi
 
 exec "$@"
