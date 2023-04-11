@@ -9,7 +9,7 @@ fi
 
 echo $$ >$PIDFILE
 
-/usr/local/bin/backup-file.sh ${NAME}
+/usr/local/sbin/backup-file.sh ${NAME}
 
 retval=$?
 

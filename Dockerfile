@@ -17,8 +17,8 @@ RUN		curl -L https://github.com/odise/go-cron/releases/download/${GO_CRON_VERSIO
 		&& chmod u+x /usr/local/bin/go-cron
 
 # install backup scripts
-ADD		backup-file.sh /usr/local/bin/backup-file.sh
-ADD		backup-run.sh /usr/local/bin/backup-run.sh
+ADD		backup-file.sh /usr/local/sbin/backup-file.sh
+ADD		backup-run.sh /usr/local/sbin/backup-run.sh
 
 #18080 http status port
 EXPOSE		18080
