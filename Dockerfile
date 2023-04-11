@@ -1,4 +1,4 @@
-FROM	debian:jessie
+FROM	debian:stretch
 MAINTAINER	Dylan Miles <dylan.g.miles@gmail.com>
 
 # install required packages
