@@ -11,7 +11,7 @@ if [ -z "$NAME" ]; then
 fi
 
 if [ -z "$FILENAME" ]; then
-	FILENAME=$(date +"%Y-%m-%d-%H%M%S")_${NAME}.tar.gz
+	FILENAME=$(date +"%Y%m%d_%H%M%S")_${NAME}.tar.gz
 fi
 
 echo "FILENAME:        ${FILENAME}"
