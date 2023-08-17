@@ -9,24 +9,43 @@ RUN echo "I am running on $BUILDPLATFORM, building for $TARGETPLATFORM" > /log
 RUN		apt-get update -qq && \
 		apt-get install -y \
 					curl \
-					wget && \
-          apt-get clean autoclean && \
-          apt-get autoremove --yes && \
-          rm -rf /var/lib/{apt,dpkg,cache,log}/
+					wget \
+					unzip \
+          && apt-get clean autoclean \
+          && apt-get autoremove --yes \
+          && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 ENV		GO_CRON_VERSION v0.0.10
 
+
+# linux/arm64 packages
 RUN if [ "$TARGETPLATFORM" = "linux/arm64" ] ; then \
-	curl -L https://github.com/prodrigestivill/go-cron/releases/download/v0.0.10/go-cron-linux-arm64.gz \
+	curl -L "https://github.com/prodrigestivill/go-cron/releases/download/v0.0.10/go-cron-linux-arm64.gz" \
+	| zcat > /usr/local/bin/go-cron \
+	&& chmod u+x /usr/local/bin/go-cron; \
+	fi
+
+RUN if [ "$TARGETPLATFORM" = "linux/arm64" ] ; then \
+	curl "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "awscliv2.zip" \
+	&& unzip awscliv2.zip \
+	&& ./aws/install \
+	; \
+	fi
+
+
+RUN if [ "$TARGETPLATFORM" = "linux/amd64" ] ; then \
+	curl -L "https://github.com/prodrigestivill/go-cron/releases/download/v0.0.10/go-cron-linux-amd64.gz" \
 	| zcat > /usr/local/bin/go-cron \
 	&& chmod u+x /usr/local/bin/go-cron; \
 	fi
 
 RUN if [ "$TARGETPLATFORM" = "linux/amd64" ] ; then \
-	curl -L https://github.com/prodrigestivill/go-cron/releases/download/v0.0.10/go-cron-linux-amd64.gz \
-	| zcat > /usr/local/bin/go-cron \
-	&& chmod u+x /usr/local/bin/go-cron; \
+	curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+	&& unzip awscliv2.zip \
+	&& ./aws/install \
+	; \
 	fi
+
 
 # install backup scripts
 ADD		backup-file.sh /usr/local/sbin/backup-file.sh
