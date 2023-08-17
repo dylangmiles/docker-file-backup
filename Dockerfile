@@ -1,5 +1,9 @@
-FROM	debian:stretch
+FROM debian:bookworm
 MAINTAINER	Dylan Miles <dylan.g.miles@gmail.com>
+
+ARG TARGETPLATFORM
+ARG BUILDPLATFORM
+RUN echo "I am running on $BUILDPLATFORM, building for $TARGETPLATFORM" > /log
 
 # install required packages
 RUN		apt-get update -qq && \
@@ -10,11 +14,19 @@ RUN		apt-get update -qq && \
           apt-get autoremove --yes && \
           rm -rf /var/lib/{apt,dpkg,cache,log}/
 
-ENV		GO_CRON_VERSION v0.0.7
+ENV		GO_CRON_VERSION v0.0.10
 
-RUN		curl -L https://github.com/odise/go-cron/releases/download/${GO_CRON_VERSION}/go-cron-linux.gz \
-		| zcat > /usr/local/bin/go-cron \
-		&& chmod u+x /usr/local/bin/go-cron
+RUN if [ "$TARGETPLATFORM" = "linux/arm64" ] ; then \
+	curl -L https://github.com/prodrigestivill/go-cron/releases/download/v0.0.10/go-cron-linux-arm64.gz \
+	| zcat > /usr/local/bin/go-cron \
+	&& chmod u+x /usr/local/bin/go-cron; \
+	fi
+
+RUN if [ "$TARGETPLATFORM" = "linux/amd64" ] ; then \
+	curl -L https://github.com/prodrigestivill/go-cron/releases/download/v0.0.10/go-cron-linux-amd64.gz \
+	| zcat > /usr/local/bin/go-cron \
+	&& chmod u+x /usr/local/bin/go-cron; \
+	fi
 
 # install backup scripts
 ADD		backup-file.sh /usr/local/sbin/backup-file.sh
