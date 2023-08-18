@@ -7,7 +7,6 @@ services:
     volumes:
         - $DESTINATION:/var/destination
         - $SOURCE:/var/source
-        - ./data/tmp:/var/tmp
     ports:
         - 127.0.0.1:18080:18080
     environment:
@@ -18,3 +17,9 @@ services:
         - AWS_SECRET_KEY
         - AWS_REGION
         - AWS_DESTINATION
+        - MAIL_TO
+        - SMTP_FROM
+        - SMTP_SERVER
+        - SMTP_HOSTNAME
+        - SMTP_USERNAME
+        - SMTP_PASSWORD

@@ -9,9 +9,19 @@ fi
 
 echo $$ >$PIDFILE
 
-/usr/local/sbin/backup-file.sh ${NAME}
+# Call backup script and capture output
+FILENAME=$(date +"%Y%m%d_%H%M%S")_${NAME}.tar.gz
+OUT_BUFF=$( /usr/local/sbin/backup-file.sh 2>&1 | tee /dev/tty )
 
 retval=$?
+
+# Email results
+ssmtp "${MAIL_TO}" <<EOF
+To:${MAIL_TO}
+From:${SMTP_FROM}
+Subject:Backup successful: ${FILENAME}
+${OUT_BUFF}
+EOF
 
 rm $PIDFILE
 

@@ -14,14 +14,6 @@ if [ -z "$FILENAME" ]; then
 	FILENAME=$(date +"%Y%m%d_%H%M%S")_${NAME}.tar.gz
 fi
 
-echo "Authenticating with AWS"
-aws configure set aws_access_key_id ${AWS_ACCESS_KEY}
-aws configure set aws_secret_access_key ${AWS_SECRET_KEY}
-aws configure set default.region ${AWS_REGION}
-#$ aws configure set default.ca_bundle /path/to/ca-bundle.pem
-#$ aws configure set region ${AWS_REGION}
-#$ aws configure set profile.testing2.region eu-west-1
-
 
 
 echo "FILENAME:        ${FILENAME}"
@@ -33,25 +25,17 @@ tar --exclude-tag-under=.file-backup-ignore -czv /var/source | aws s3 cp - "${AW
 
 RETVAL=$?
 
-
-#if [ "$RETVAL" == 0 ]; then
-#    echo Copy archive to final destination
-#    cp -v ${FILENAME} /var/destination
-#    RETVAL=$?
-#fi
-#
-#if [ "$RETVAL" == 0 ]; then
-#    echo Remove temporary archives
-#    rm -v ./*
-#    RETVAL=$?
-#fi
-#
-#cd ~
-
 if [ "$RETVAL" == 0 ]; then
 	echo Backup finished successfully.
+
 	exit 0
 else
 	echo Backup failed with errors!
+
+    # Send success email
+    #EMAIL_BUFF="To:${MAIL_TO}\nFrom:${MAIL_FROM}\nSubject:Backup successful ${FILENAME}\n\n${OUT_BUFF}"
+    #echo ${EMAIL_BUFF} | ssmtp -v ${MAIL_TO}
+
 	exit 1
 fi
+

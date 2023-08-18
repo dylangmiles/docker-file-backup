@@ -3,6 +3,7 @@ MAINTAINER	Dylan Miles <dylan.g.miles@gmail.com>
 
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
+
 RUN echo "I am running on $BUILDPLATFORM, building for $TARGETPLATFORM" > /log
 
 # install required packages
@@ -11,6 +12,8 @@ RUN		apt-get update -qq && \
 					curl \
 					wget \
 					unzip \
+					ssmtp \
+					gettext \
           && apt-get clean autoclean \
           && apt-get autoremove --yes \
           && rm -rf /var/lib/{apt,dpkg,cache,log}/
@@ -32,7 +35,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/arm64" ] ; then \
 	; \
 	fi
 
-
+# linux/amd64 packages
 RUN if [ "$TARGETPLATFORM" = "linux/amd64" ] ; then \
 	curl -L "https://github.com/prodrigestivill/go-cron/releases/download/v0.0.10/go-cron-linux-amd64.gz" \
 	| zcat > /usr/local/bin/go-cron \
@@ -46,6 +49,9 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ] ; then \
 	; \
 	fi
 
+# Configure mail notification sending
+ADD conf/ssmtp.conf /etc/ssmtp/ssmtp.conf.template
+# RUN envsubst < /etc/ssmtp/ssmtp.conf.template > /etc/ssmtp/ssmtp.conf
 
 # install backup scripts
 ADD		backup-file.sh /usr/local/sbin/backup-file.sh
