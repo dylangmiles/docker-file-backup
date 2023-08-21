@@ -21,6 +21,9 @@ SCHEDULE=* * * * *
 # Label used for the backup filename. The result backup file name will use the format  YYMMDD_HH_mm_ss_NAME_tar.gz
 NAME=test
 
+# METHOD local | aws
+METHOD=aws
+
 # The location where backups will be written to if file based
 DESTINATION=./data/destination
 
