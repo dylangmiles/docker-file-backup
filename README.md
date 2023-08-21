@@ -2,7 +2,9 @@
 
 This container can be used to periodically backup files or folders.
 
-Example usage which will backup the source file or folder every day at 03:00. You can check the last run with the integrated HTTP server on port 18080:
+You can check the last run with the integrated HTTP server on port 18080.
+
+The backup location is tar gziped to an Amazon S3 bucket and an email sent with the status of the backup.
 
 # Setup
 
@@ -11,7 +13,7 @@ Example usage which will backup the source file or folder every day at 03:00. Yo
 git clone git@github.com:dylangmiles/docker-file-backup.git
 ```
 
-1. Create a `.env` file in the directory with the following settings:
+2. Create a `.env` file in the directory with the following settings:
 ```bash
 # Cron schedule
 SCHEDULE=* * * * *
@@ -19,16 +21,44 @@ SCHEDULE=* * * * *
 # Label used for the backup filename. The result backup file name will use the format  YYMMDD_HH_mm_ss_NAME_tar.gz
 NAME=test
 
-# The location where backups will be written to
+# The location where backups will be written to if file based
 DESTINATION=./data/destination
 
 # The location that will be backed up
 SOURCE=./data/source
+
+# AWS Access Key
+AWS_ACCESS_KEY=***************
+
+# AWS Secret Key
+AWS_SECRET_KEY=***************
+
+# AWS Region
+AWS_REGION=eu-west-1
+
+# AWS Bucket name
+AWS_DESTINATION=s3://bucketname/path
+
+
+# Email address where notifications are sent
+MAIL_TO=name@email.com
+
+# Email sending options
+SMTP_FROM=from@email.com
+SMTP_SERVER=mail.server.com:587
+SMTP_HOSTNAME=local.server.com
+SMTP_USERNAME=username@email.com
+SMTP_PASSWORD=*******
+
 ```
 
+3. Start the container
+```
+docker compose up -d file-backup
+```
+
+
 NB: The backup will ignore any directories with .file-backup-ignore in them.
-
-
 
 # Reference
 https://superuser.com/questions/1248276/aws-upload-folder-to-s3-as-tar-gz-without-compressing-locally
