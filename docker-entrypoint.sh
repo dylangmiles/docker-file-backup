@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
 echo "Authenticating with AWS"
@@ -9,7 +9,7 @@ aws configure set default.region ${AWS_REGION}
 echo "Setting up SMTP settings"
 envsubst < /etc/ssmtp/ssmtp.conf.template > /etc/ssmtp/ssmtp.conf
 
-if [ $1 = "go-cron" ]; then
+if [ $1 == "go-cron" ]; then
 
 	if [ -z "$SCHEDULE" ]; then
 		echo Missing SCHEDULE environment variable 2>&1

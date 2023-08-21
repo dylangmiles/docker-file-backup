@@ -1,4 +1,7 @@
-#!/bin/sh
+#!/bin/bash
+
+# Get last error even in piped commands
+set -o pipefail
 
 PIDFILE=/var/run/backup-run.pid
 
@@ -9,20 +12,30 @@ fi
 
 echo $$ >$PIDFILE
 
+echo Backup starting ...
+
 # Call backup script and capture output
 FILENAME=$(date +"%Y%m%d_%H%M%S")_${NAME}.tar.gz
-OUT_BUFF=$( /usr/local/sbin/backup-file.sh 2>&1 | tee /dev/tty )
+OUT_BUFF=$( /usr/local/sbin/backup-file.sh 2>&1 | tee /proc/1/fd/1 )
 
-retval=$?
+RETVAL=$?
+
+# Calculate result in words
+RESULT="unknown"
+if [ "$RETVAL" == 0 ]; then
+	RESULT="success"
+else
+	RESULT="failed"
+fi
 
 # Email results
 ssmtp "${MAIL_TO}" <<EOF
 To:${MAIL_TO}
 From:${SMTP_FROM}
-Subject:Backup successful: ${FILENAME}
+Subject:Backup ${RESULT}: ${FILENAME}
 ${OUT_BUFF}
 EOF
 
 rm $PIDFILE
 
-exit $retval
+exit $RETVAL
