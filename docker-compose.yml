@@ -5,14 +5,15 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-        - $DESTINATION:/var/destination
+        - $LOCAL_DESTINATION:/var/destination
         - $SOURCE:/var/source
     ports:
         - 127.0.0.1:18080:18080
     environment:
         - SCHEDULE
         - NAME
-        - DESTINATION
+        - METHOD
+        - LOCAL_DESTINATION
         - AWS_ACCESS_KEY
         - AWS_SECRET_KEY
         - AWS_REGION
