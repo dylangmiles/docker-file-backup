@@ -42,7 +42,6 @@ AWS_REGION=eu-west-1
 # AWS Bucket name
 AWS_DESTINATION=s3://bucketname/path
 
-
 # Email address where notifications are sent
 MAIL_TO=name@email.com
 
@@ -59,7 +58,6 @@ SMTP_PASSWORD=*******
 ```
 docker compose up -d file-backup
 ```
-
 
 NB: The backup will ignore any directories with .file-backup-ignore in them.
 
