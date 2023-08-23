@@ -9,6 +9,11 @@ aws configure set default.region ${AWS_REGION}
 echo "Setting up SMTP settings"
 envsubst < /etc/ssmtp/ssmtp.conf.template > /etc/ssmtp/ssmtp.conf
 
+if [ -n "$TIMEZONE" ]; then
+	echo ${TIMEZONE} > /etc/timezone && \
+	dpkg-reconfigure -f noninteractive tzdata
+fi
+
 if [ $1 == "go-cron" ]; then
 
 	if [ -z "$SCHEDULE" ]; then
