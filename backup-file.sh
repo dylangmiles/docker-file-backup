@@ -3,9 +3,9 @@
 # Get last error even in piped commands
 set -o pipefail
 
-if [ -z "$METHOD" ]; then
-  echo No METHOD specified, using default
-	METHOD=local
+if [ -z "$LOCATION" ]; then
+  echo No LOCATION specified, using default
+	LOCATION=local
 fi
 
 if [ -z "$NAME" ]; then
@@ -17,19 +17,19 @@ if [ -z "$FILENAME" ]; then
 	FILENAME=$(date +"%Y%m%d_%H%M%S")_${NAME}.tar.gz
 fi
 
-CMD="echo Backup method not available"
+CMD="echo Backup location not available"
 DESTINATION=$LOCAL_DESTINATION
-if [ "$METHOD" == "local" ]; then
+if [ "$LOCATION" == "local" ]; then
 	DESTINATION=$LOCAL_DESTINATION
 	CMD="tar --exclude-tag-under=.file-backup-ignore -czvf "/var/destination/${FILENAME}" /var/source"
 fi
 
-if [ "$METHOD" == "aws" ]; then
+if [ "$LOCATION" == "aws" ]; then
 	DESTINATION=$AWS_DESTINATION
 	CMD="tar --exclude-tag-under=.file-backup-ignore -czv /var/source | aws s3 cp - "${AWS_DESTINATION}/${FILENAME}.tar.gz""
 fi
 
-echo "Backup starting of ${FILENAME} using ${METHOD} method to ${DESTINATION}"
+echo "Backup starting of ${FILENAME} on ${LOCATION} to ${DESTINATION}"
 echo ""
 
 eval "$CMD"

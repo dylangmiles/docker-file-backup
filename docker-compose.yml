@@ -12,7 +12,7 @@ services:
     environment:
         - SCHEDULE
         - NAME
-        - METHOD
+        - LOCATION
         - LOCAL_DESTINATION
         - AWS_ACCESS_KEY
         - AWS_SECRET_KEY
