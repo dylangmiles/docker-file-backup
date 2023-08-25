@@ -59,5 +59,10 @@ SMTP_PASSWORD=*******
 docker compose up -d file-backup
 ```
 
+You can also manually run the backup from the command line
+```
+docker compose run --rm file-backup backup-run.sh
+```
+
 NB: The backup will ignore any directories with .file-backup-ignore in them.
 
