@@ -22,7 +22,7 @@ SCHEDULE=* * * * *
 NAME=test
 
 # METHOD local | aws
-METHOD=aws
+LOCATION=aws
 
 # The location where backups will be written to if file based
 DESTINATION=./data/destination
@@ -61,5 +61,3 @@ docker compose up -d file-backup
 
 NB: The backup will ignore any directories with .file-backup-ignore in them.
 
-# Reference
-https://superuser.com/questions/1248276/aws-upload-folder-to-s3-as-tar-gz-without-compressing-locally
