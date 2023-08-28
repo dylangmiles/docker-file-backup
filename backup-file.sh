@@ -26,7 +26,7 @@ fi
 
 if [ "$LOCATION" == "aws" ]; then
 	DESTINATION=$AWS_DESTINATION
-	CMD="tar --exclude-tag-under=.file-backup-ignore -czv /var/source | aws s3 cp - "${AWS_DESTINATION}/${FILENAME}.tar.gz""
+	CMD="tar --exclude-tag-under=.file-backup-ignore -czv /var/source | aws s3 cp - "${AWS_DESTINATION}/${FILENAME}""
 fi
 
 echo "Backup starting of ${FILENAME} on ${LOCATION} to ${DESTINATION}"

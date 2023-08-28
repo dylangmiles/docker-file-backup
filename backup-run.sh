@@ -12,8 +12,6 @@ fi
 
 echo $$ >$PIDFILE
 
-echo Backup starting ...
-
 # Call backup script and capture output
 FILENAME=$(date +"%Y%m%d_%H%M%S")_${NAME}.tar.gz
 OUT_BUFF=$( /usr/local/sbin/backup-file.sh 2>&1 | tee /proc/1/fd/1 )
