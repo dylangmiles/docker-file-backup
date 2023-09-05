@@ -14,7 +14,8 @@ echo $$ >$PIDFILE
 
 # Call backup script and capture output
 FILENAME=$(date +"%Y%m%d_%H%M%S")_${NAME}.tar.gz
-OUT_BUFF=$( /usr/local/sbin/backup-file.sh 2>&1 | tee /proc/1/fd/1 )
+LOGFILE=/root/$(date +"%Y%m%d_%H%M%S")_${NAME}.log.gz
+OUT_BUFF=$( /usr/local/sbin/backup-file.sh 2>&1 | tee /proc/1/fd/1 >(gzip > $LOGFILE))
 
 RETVAL=$?
 
@@ -26,14 +27,11 @@ else
 	RESULT="failed"
 fi
 
-# Email results
-ssmtp "${MAIL_TO}" <<EOF
-To:${MAIL_TO}
-From:${SMTP_FROM}
-Subject:Backup ${RESULT}: ${FILENAME}
-${OUT_BUFF}
+cat <<EOF | mutt -a ${LOGFILE} -s "Backup ${RESULT}: ${FILENAME}" -- $MAIL_TO
+The backup log is attached.
 EOF
 
+rm $LOGFILE
 rm $PIDFILE
 
 exit $RETVAL

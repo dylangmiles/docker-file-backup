@@ -9,18 +9,4 @@ services:
         - $SOURCE:/var/source
     ports:
         - 127.0.0.1:18080:18080
-    environment:
-        - SCHEDULE
-        - NAME
-        - LOCATION
-        - LOCAL_DESTINATION
-        - AWS_ACCESS_KEY
-        - AWS_SECRET_KEY
-        - AWS_REGION
-        - AWS_DESTINATION
-        - MAIL_TO
-        - SMTP_FROM
-        - SMTP_SERVER
-        - SMTP_HOSTNAME
-        - SMTP_USERNAME
-        - SMTP_PASSWORD
+    env_file: .env

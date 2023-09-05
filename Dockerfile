@@ -12,8 +12,9 @@ RUN		apt-get update -qq && \
 					curl \
 					wget \
 					unzip \
-					ssmtp \
+					msmtp \
 					gettext \
+					mutt \
           && apt-get clean autoclean \
           && apt-get autoremove --yes \
           && rm -rf /var/lib/{apt,dpkg,cache,log}/
@@ -50,8 +51,8 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ] ; then \
 	fi
 
 # Configure mail notification sending
-ADD conf/ssmtp.conf /etc/ssmtp/ssmtp.conf.template
-# RUN envsubst < /etc/ssmtp/ssmtp.conf.template > /etc/ssmtp/ssmtp.conf
+ADD conf/.muttrc /root/.muttrc.template
+ADD conf/.msmtprc /root/.msmtprc.template
 
 # install backup scripts
 ADD		backup-file.sh /usr/local/sbin/backup-file.sh
