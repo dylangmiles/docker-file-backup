@@ -27,7 +27,7 @@ else
 	RESULT="failed"
 fi
 
-cat <<EOF | mutt -a ${LOGFILE} -s "Backup ${RESULT}: ${FILENAME}" -- $MAIL_TO
+cat <<EOF | mutt -a ${LOGFILE} -s "File Backup ${RESULT}: ${FILENAME}" -- $MAIL_TO
 The backup log is attached.
 EOF
 
