@@ -29,6 +29,12 @@ if [ "$LOCATION" == "aws" ]; then
 	CMD="tar --exclude-tag-under=.file-backup-ignore -czv /var/source | aws s3 cp - "${AWS_DESTINATION}/${FILENAME}""
 fi
 
+if [ "$LOCATION" == "azure" ]; then
+	AZURE_DESTINATION="https://${AZURE_STORAGE_ACCOUNT}.blob.core.windows.net/${AZURE_STORAGE_BLOB_CONTAINER}/${AZURE_STORAGE_BLOB_PREFIX}"
+	DESTINATION=$AZURE_DESTINATION
+	CMD="tar --exclude-tag-under=.file-backup-ignore -czv /var/source | azcopy copy "${DESTINATION}${FILENAME}" --from-to PipeBlob"
+fi
+
 echo "Backup starting of ${FILENAME} on ${LOCATION} to ${DESTINATION}"
 echo ""
 
